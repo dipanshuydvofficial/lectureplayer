@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Custom Lecture Player</title>
+
+<style>
+body {
+    margin: 0;
+    background: #0f0f0f;
+    color: white;
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.player-container {
+    width: 90%;
+    max-width: 900px;
+    margin-top: 40px;
+}
+
+.speed-controls {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+    justify-content: center;
+}
+
+.speed-btn {
+    padding: 8px 14px;
+    border-radius: 20px;
+    border: none;
+    background: #1f1f1f;
+    color: white;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.speed-btn:hover {
+    background: #333;
+}
+
+.speed-btn.active {
+    background: #00c853;
+    color: black;
+    font-weight: bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="player-container">
+    <div id="player"></div>
+
+    <div class="speed-controls">
+        <button class="speed-btn" data-speed="0.5">0.5×</button>
+        <button class="speed-btn" data-speed="0.75">0.75×</button>
+        <button class="speed-btn active" data-speed="1">1×</button>
+        <button class="speed-btn" data-speed="1.25">1.25×</button>
+        <button class="speed-btn" data-speed="1.5">1.5×</button>
+        <button class="speed-btn" data-speed="2">2×</button>
+        <button class="speed-btn" data-speed="3">3×</button>
+    </div>
+</div>
+
+<script src="https://www.youtube.com/iframe_api"></script>
+
+<script>
+let player;
+
+function onYouTubeIframeAPIReady() {
+    player = new YT.Player('player', {
+        height: '500',
+        width: '100%',
+        videoId: 'inxXBUyMCrs', // ✅ Your video embedded
+        playerVars: {
+            modestbranding: 1,
+            controls: 1,
+            rel: 0
+        }
+    });
+}
+
+const buttons = document.querySelectorAll('.speed-btn');
+
+buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+        const speed = parseFloat(btn.dataset.speed);
+
+        if (player && player.setPlaybackRate) {
+            player.setPlaybackRate(speed);
+        }
+
+        buttons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+    });
+});
+</script>
+
+</body>
+</html>
